@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Revelación de Género | Johanna y Harold</title>
+    
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+
     <style>
         :root {
             --pink: #ffb6c1;
@@ -48,21 +52,18 @@
             font-weight: bold;
             margin-bottom: 20px;
         }
-        
-        /* Contenedor especial para la imagen */
         .image-container {
             max-width: 90%;
-            margin: 0 auto 30px; /* Centrado y margen inferior */
-            border-radius: 20px; /* Bordes redondeados */
-            overflow: hidden; /* Corta la imagen para los bordes redondos */
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2); /* Sombra suave */
+            margin: 0 auto 30px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
         .image-container img {
             width: 100%;
             height: auto;
             display: block;
         }
-
         .details {
             margin: 30px 0;
             padding: 20px;
@@ -83,10 +84,18 @@
             text-decoration: none;
             font-weight: bold;
             color: white;
-            transition: transform 0.2s;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s, opacity 0.2s;
+            font-size: 1em;
         }
         .btn:hover {
             transform: scale(1.05);
+        }
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
         }
         .btn-pink { background-color: #ff91a4; }
         .btn-blue { background-color: #87cefa; }
@@ -101,6 +110,21 @@
             padding-top: 20px;
             border-top: 1px solid #ddd;
         }
+        .results {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .count-girl { color: #ff6b81; }
+        .count-boy { color: #4682b4; }
+        #thanks-msg {
+            display: none;
+            color: #2e7d32;
+            font-weight: bold;
+            margin-top: 15px;
+        }
     </style>
 </head>
 <body>
@@ -114,13 +138,13 @@
         </div>
 
         <div class="image-container">
-            <img src="moyyo.jpg" alt="Johanna y Harold, padres orgullosos">
+            <img src="moyyo.jpg" alt="Johanna y Harold">
         </div>
 
         <div class="details">
             <p><strong>📅 Fecha:</strong> Sábado, 13 de Junio de 2026</p>
             <p><strong>⏰ Hora:</strong> 3:00 PM</p>
-            <p><strong>📍 Lugar:</strong> Cali, Valle del Cauca<br>(Reemplaza aquí con la dirección exacta)</p>
+            <p><strong>📍 Lugar:</strong> Cali, Valle del Cauca</p>
         </div>
 
         <p class="dress-code">
@@ -129,14 +153,73 @@
 
         <div class="poll">
             <h3>¿Tú qué crees que será?</h3>
-            <a href="#" class="btn btn-pink">¡Es Niña! 🎀</a>
-            <a href="#" class="btn btn-blue">¡Es Niño! 🧢</a>
+            <button id="btn-girl" class="btn btn-pink" onclick="vote('girl')">¡Es Niña! 🎀</button>
+            <button id="btn-boy" class="btn btn-blue" onclick="vote('boy')">¡Es Niño! 🧢</button>
+            
+            <p id="thanks-msg">¡Gracias por votar! Tu predicción ha sido registrada.</p>
+
+            <div class="results">
+                <div>Team Niña: <span id="girl-count" class="count-girl">0</span></div>
+                <div>Team Niño: <span id="boy-count" class="count-boy">0</span></div>
+            </div>
         </div>
 
-        <a href="https://wa.me/TUNUMERODEWHATSAPP" class="btn btn-whatsapp" target="_blank">
+        <a href="https://wa.me/57TUNUMERODEWHATSAPP" class="btn btn-whatsapp" target="_blank">
             Confirmar Asistencia
         </a>
     </div>
 
+    <script>
+        // Configuración real de tu proyecto en Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyB7W3iDnQg8lE-Z4lB4UcdJb9vMAei7mg4",
+            authDomain: "revelbebe-22e2f.firebaseapp.com",
+            databaseURL: "https://revelbebe-22e2f-default-rtdb.firebaseio.com",
+            projectId: "revelbebe-22e2f",
+            storageBucket: "revelbebe-22e2f.firebasestorage.app",
+            messagingSenderId: "293982525619",
+            appId: "1:293982525619:web:3e06a6b9e087e451e078c6",
+            measurementId: "G-44B8QKTGS1"
+        };
+
+        // Inicializar Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        const votesRef = database.ref('votes');
+
+        // Escuchar cambios en la base de datos en tiempo real
+        votesRef.on('value', (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                document.getElementById('girl-count').innerText = data.girl || 0;
+                document.getElementById('boy-count').innerText = data.boy || 0;
+            }
+        });
+
+        // Comprobar si el usuario ya votó anteriormente localmente
+        if (localStorage.getItem('hasVoted')) {
+            disableVoting();
+        }
+
+        // Función para ejecutar el voto de forma atómica (evita colisiones de datos)
+        function vote(team) {
+            if (localStorage.getItem('hasVoted')) return;
+
+            votesRef.child(team).transaction((currentValue) => {
+                return (currentValue || 0) + 1;
+            }, (error, committed) => {
+                if (committed) {
+                    localStorage.setItem('hasVoted', 'true');
+                    disableVoting();
+                }
+            });
+        }
+
+        function disableVoting() {
+            document.getElementById('btn-girl').disabled = true;
+            document.getElementById('btn-boy').disabled = true;
+            document.getElementById('thanks-msg').style.display = 'block';
+        }
+    </script>
 </body>
 </html>
