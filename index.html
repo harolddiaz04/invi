@@ -12,25 +12,24 @@
         :root {
             --pink: #ffb6c1;
             --blue: #add8e6;
-            --dark: #333;
+            --dark: #4a3728; /* Un café oscuro que combina mejor con el estilo tierno */
         }
         
-        /* ESTILOS DE FONDO - BUSCANDO 'fondo.jpg' en minúsculas */
         body {
             font-family: 'Helvetica Neue', Arial, sans-serif;
             margin: 0;
             padding: 0;
             text-align: center;
-            background-image: url('fondo.jpg'); /* Ojo: debe coincidir exacto en GitHub */
+            /* SE APLICA TU IMAGEN DE FONDO A TODA LA PÁGINA */
+            background-image: url('fondo.jpg'); 
             background-size: cover;
-            background-position: center;
+            background-position: center top;
             background-attachment: fixed;
             background-repeat: no-repeat;
             color: var(--dark);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
         }
         
@@ -38,7 +37,7 @@
             overflow: hidden;
         }
 
-        /* Pantalla de Bienvenida con fondo */
+        /* Pantalla de Bienvenida con el mismo fondo */
         .welcome-screen {
             position: fixed;
             top: 0;
@@ -47,7 +46,7 @@
             height: 100vh;
             background-image: url('fondo.jpg');
             background-size: cover;
-            background-position: center;
+            background-position: center top;
             z-index: 9999;
             display: flex;
             justify-content: center;
@@ -58,46 +57,38 @@
             background: rgba(255, 255, 255, 0.9);
             padding: 40px;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             text-align: center;
-            max-width: 400px;
+            max-width: 350px;
             width: 80%;
         }
-        .welcome-content h1 {
-            font-size: 1.8em;
-            margin-bottom: 10px;
-        }
-        .welcome-content p {
-            font-size: 1.1em;
-            color: #555;
-            margin-bottom: 25px;
-        }
 
-        /* Cuadro blanco central con ligera transparencia */
+        /* CONTENEDOR TRANSPARENTE (Ya no es blanco) */
         .container {
-            background: rgba(255, 255, 255, 0.85);
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            background: transparent; /* Fondo eliminado */
+            padding: 20px;
             max-width: 500px;
             width: 90%;
-            margin: 20px;
-            backdrop-filter: blur(5px);
+            /* Espacio arriba para no tapar al osito que duerme en la nube */
+            margin-top: 120px; 
+            /* Espacio abajo para no tapar a los ositos con globos */
+            margin-bottom: 120px; 
         }
         
         h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
+            font-size: 2.8em;
+            margin-bottom: 5px;
             color: var(--dark);
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
         }
         h2 {
-            font-size: 1.2em;
+            font-size: 1.3em;
             font-weight: normal;
-            color: #666;
+            color: #7a6352;
             margin-bottom: 30px;
         }
         .names {
-            font-size: 1.5em;
+            font-size: 1.6em;
             font-weight: bold;
             margin-bottom: 15px;
         }
@@ -107,102 +98,93 @@
             width: 100%;
             max-width: 250px;
             border-radius: 30px;
+            opacity: 0.8;
         }
 
+        /* Galería ajustada */
         .media-gallery {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 15px;
             margin: 0 auto 30px;
-            max-width: 90%;
         }
         .media-gallery img, .media-gallery video {
             width: 100%;
-            height: auto;
-            border-radius: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            display: block;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
+        /* Detalles con fondo muy suave para legibilidad */
         .details {
             margin: 30px 0;
-            padding: 20px;
-            background: rgba(249, 249, 249, 0.8);
-            border-radius: 10px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.4); 
+            border-radius: 15px;
             font-size: 1.1em;
             line-height: 1.6;
         }
+        
         .dress-code {
             font-style: italic;
+            font-weight: bold;
             margin-bottom: 30px;
         }
+
+        /* Botones */
         .btn {
             display: inline-block;
-            padding: 15px 30px;
-            margin: 10px;
+            padding: 15px 25px;
+            margin: 8px;
             border-radius: 30px;
             text-decoration: none;
             font-weight: bold;
             color: white;
             border: none;
             cursor: pointer;
-            transition: transform 0.2s, opacity 0.2s;
+            transition: transform 0.2s;
             font-size: 1em;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
-        .btn:hover {
-            transform: scale(1.05);
-        }
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
+        .btn:hover { transform: scale(1.05); }
         .btn-pink { background-color: #ff91a4; }
         .btn-blue { background-color: #87cefa; }
-        .btn-whatsapp { 
-            background-color: #25D366; 
-            display: block; 
-            margin: 20px auto; 
-            max-width: 200px;
-        }
+        .btn-whatsapp { background-color: #25D366; display: block; margin: 20px auto; max-width: 220px; }
+
         .poll {
             margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #ddd;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
         }
         .results {
             display: flex;
             justify-content: space-around;
-            margin-top: 20px;
-            font-size: 1.2em;
-            font-weight: bold;
-        }
-        .count-girl { color: #ff6b81; }
-        .count-boy { color: #4682b4; }
-        #thanks-msg {
-            display: none;
-            color: #2e7d32;
-            font-weight: bold;
             margin-top: 15px;
+            font-size: 1.3em;
+            font-weight: bold;
         }
+        .count-girl { color: #d63384; }
+        .count-boy { color: #007bff; }
+        #thanks-msg { display: none; color: #2e7d32; font-weight: bold; margin-top: 15px; }
     </style>
 </head>
 <body class="locked">
 
     <div id="welcome-screen" class="welcome-screen">
         <div class="welcome-content">
-            <h1>¡Tenemos una sorpresa!</h1>
+            <h1>💌</h1>
+            <h2>¡Tienes una invitación especial!</h2>
             <p>Sube el volumen 🔊</p>
-            <button class="btn btn-pink" style="background-color: #ff91a4; width: 100%;" onclick="abrirInvitacion()">Abrir Invitación 💌</button>
+            <button class="btn btn-pink" style="width: 100%;" onclick="abrirInvitacion()">Abrir Invitación</button>
         </div>
     </div>
 
     <div class="container">
         <h1>¿Niño o Niña?</h1>
-        <h2>¡El gran secreto está por revelarse!</h2>
+        <h2>¡El gran secreto se revela!</h2>
         
         <div class="names">
-            Acompaña a Johanna y Harold <br>a descubrir esta gran sorpresa.
+            Acompaña a Johanna y Harold <br>en esta dulce espera.
         </div>
 
         <audio id="bg-music" src="indi.mp3" controls loop class="audio-player"></audio>
@@ -210,55 +192,44 @@
         <div class="media-gallery">
             <img src="moyyo.jpg" alt="Johanna y Harold">
             <video src="ecovideo.mp4" controls preload="metadata"></video>
-            <img src="bebeeco1.jpg" alt="Ecografía del bebé">
+            <img src="bebeeco1.jpg" alt="Ecografía">
         </div>
 
         <div class="details">
-            <p><strong>📅 Fecha:</strong> Domingo, 24 de Mayo de 2026</p>
+            <p><strong>📅 Fecha:</strong> Domingo, 24 de Mayo</p>
             <p><strong>⏰ Hora:</strong> 7:00 PM</p>
             <p><strong>📍 Lugar:</strong> Cali, Valle del Cauca</p>
+            <p class="dress-code">Código de vestimenta: <br> ¡Rosa o Azul según tu predicción! 🎀🧢</p>
         </div>
-
-        <p class="dress-code">
-            Código de vestimenta: ¡Ven vestido de rosa o azul según lo que creas que será el bebé!
-        </p>
 
         <div class="poll">
             <h3>¿Tú qué crees que será?</h3>
             <button id="btn-girl" class="btn btn-pink" onclick="vote('girl')">¡Es Niña! 🎀</button>
             <button id="btn-boy" class="btn btn-blue" onclick="vote('boy')">¡Es Niño! 🧢</button>
-            
-            <p id="thanks-msg">¡Gracias por votar! Tu predicción ha sido registrada.</p>
-
+            <p id="thanks-msg">¡Voto registrado! ✨</p>
             <div class="results">
-                <div>Team Niña: <span id="girl-count" class="count-girl">0</span></div>
-                <div>Team Niño: <span id="boy-count" class="count-boy">0</span></div>
+                <div>Team 🎀: <span id="girl-count" class="count-girl">0</span></div>
+                <div>Team 🧢: <span id="boy-count" class="count-boy">0</span></div>
             </div>
         </div>
 
         <a href="https://wa.me/3135211286" class="btn btn-whatsapp" target="_blank">
-            Confirmar Asistencia
+            Confirmar Asistencia ✅
         </a>
     </div>
 
     <script>
-        // FUNCIÓN PARA ABRIR LA INVITACIÓN Y REPRODUCIR AUDIO
         function abrirInvitacion() {
             var welcomeScreen = document.getElementById('welcome-screen');
             var bgMusic = document.getElementById('bg-music');
-            
-            // Ocultar pantalla de bienvenida
             welcomeScreen.style.opacity = '0';
             setTimeout(function() {
                 welcomeScreen.style.display = 'none';
                 document.body.classList.remove('locked');
             }, 800);
-            
-            // Iniciar la música
             bgMusic.play();
         }
 
-        // Configuración de Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyB7W3iDnQg8lE-Z4lB4UcdJb9vMAei7mg4",
             authDomain: "revelbebe-22e2f.firebaseapp.com",
@@ -270,12 +241,10 @@
             measurementId: "G-44B8QKTGS1"
         };
 
-        // Inicializar Firebase
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
         const votesRef = database.ref('votes');
 
-        // Escuchar cambios en la base de datos
         votesRef.on('value', (snapshot) => {
             const data = snapshot.val();
             if (data) {
@@ -284,15 +253,10 @@
             }
         });
 
-        // Comprobar si ya votó
-        if (localStorage.getItem('hasVoted')) {
-            disableVoting();
-        }
+        if (localStorage.getItem('hasVoted')) { disableVoting(); }
 
-        // Función para votar
         function vote(team) {
             if (localStorage.getItem('hasVoted')) return;
-
             votesRef.child(team).transaction((currentValue) => {
                 return (currentValue || 0) + 1;
             }, (error, committed) => {
