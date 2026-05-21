@@ -15,16 +15,16 @@
             --dark: #333;
         }
         
-        /* ESTILOS DE FONDO CON LA NUEVA IMAGEN */
+        /* ESTILOS DE FONDO - BUSCANDO 'fondo.jpg' en minúsculas */
         body {
             font-family: 'Helvetica Neue', Arial, sans-serif;
             margin: 0;
             padding: 0;
             text-align: center;
-            background-image: url('fondo.JPG'); /* Tu hermosa imagen */
+            background-image: url('fondo.jpg'); /* Ojo: debe coincidir exacto en GitHub */
             background-size: cover;
             background-position: center;
-            background-attachment: fixed; /* Mantiene el fondo fijo al hacer scroll */
+            background-attachment: fixed;
             background-repeat: no-repeat;
             color: var(--dark);
             min-height: 100vh;
@@ -45,7 +45,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background-image: url('fondo.JPG');
+            background-image: url('fondo.jpg');
             background-size: cover;
             background-position: center;
             z-index: 9999;
@@ -55,7 +55,7 @@
             transition: opacity 0.8s ease;
         }
         .welcome-content {
-            background: rgba(255, 255, 255, 0.9); /* Ligeramente más transparente */
+            background: rgba(255, 255, 255, 0.9);
             padding: 40px;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
@@ -75,14 +75,14 @@
 
         /* Cuadro blanco central con ligera transparencia */
         .container {
-            background: rgba(255, 255, 255, 0.85); /* Se trasluce un poco el fondo */
+            background: rgba(255, 255, 255, 0.85);
             padding: 40px;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             max-width: 500px;
             width: 90%;
             margin: 20px;
-            backdrop-filter: blur(5px); /* Efecto de desenfoque detrás del cuadro */
+            backdrop-filter: blur(5px);
         }
         
         h1 {
