@@ -50,20 +50,33 @@
         .names {
             font-size: 1.5em;
             font-weight: bold;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
-        .image-container {
-            max-width: 90%;
+        
+        /* Estilos para el audio */
+        .audio-player {
+            margin-bottom: 25px;
+            width: 100%;
+            max-width: 250px;
+            border-radius: 30px;
+        }
+
+        /* Estilos para la galería de fotos y video */
+        .media-gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* Espacio entre cada foto/video */
             margin: 0 auto 30px;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            max-width: 90%;
         }
-        .image-container img {
+        .media-gallery img, .media-gallery video {
             width: 100%;
             height: auto;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
             display: block;
         }
+
         .details {
             margin: 30px 0;
             padding: 20px;
@@ -137,8 +150,14 @@
             Acompaña a Johanna y Harold <br>a descubrir esta gran sorpresa.
         </div>
 
-        <div class="image-container">
+        <audio src="indi.mp3" controls autoplay loop class="audio-player"></audio>
+
+        <div class="media-gallery">
             <img src="moyyo.jpg" alt="Johanna y Harold">
+            
+            <video src="ecovideo.mp4" controls preload="metadata"></video>
+            
+            <img src="bebeeco1.jpg" alt="Ecografía del bebé">
         </div>
 
         <div class="details">
@@ -201,7 +220,7 @@
             disableVoting();
         }
 
-        // Función para ejecutar el voto de forma atómica (evita colisiones de datos)
+        // Función para ejecutar el voto de forma atómica
         function vote(team) {
             if (localStorage.getItem('hasVoted')) return;
 
