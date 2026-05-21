@@ -20,7 +20,6 @@
             margin: 0;
             padding: 0;
             text-align: center;
-            /* Fondo de la invitación por dentro */
             background-image: url('fondo.jpg'); 
             background-size: cover;
             background-position: center top;
@@ -37,22 +36,23 @@
             overflow: hidden;
         }
 
-        /* PANTALLA DE BIENVENIDA CON LA NUEVA IMAGEN 'abrir.jpg' */
+        /* PANTALLA DE BIENVENIDA CORREGIDA */
         .welcome-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background-image: url('abrir.jpg'); /* Tu nueva portada */
+            /* AQUÍ ESTÁ EL CAMBIO: .png en minúsculas */
+            background-image: url('abrir.png'); 
             background-size: cover;
             background-position: center;
             z-index: 9999;
             display: flex;
             flex-direction: column;
-            justify-content: flex-end; /* Mueve el contenido hacia abajo para no tapar la carta */
+            justify-content: flex-end; 
             align-items: center;
-            padding-bottom: 12vh; /* Espaciado desde el borde inferior */
+            padding-bottom: 12vh; 
             transition: opacity 0.8s ease;
         }
         
@@ -252,29 +252,4 @@
             const data = snapshot.val();
             if (data) {
                 document.getElementById('girl-count').innerText = data.girl || 0;
-                document.getElementById('boy-count').innerText = data.boy || 0;
-            }
-        });
-
-        if (localStorage.getItem('hasVoted')) { disableVoting(); }
-
-        function vote(team) {
-            if (localStorage.getItem('hasVoted')) return;
-            votesRef.child(team).transaction((currentValue) => {
-                return (currentValue || 0) + 1;
-            }, (error, committed) => {
-                if (committed) {
-                    localStorage.setItem('hasVoted', 'true');
-                    disableVoting();
-                }
-            });
-        }
-
-        function disableVoting() {
-            document.getElementById('btn-girl').disabled = true;
-            document.getElementById('btn-boy').disabled = true;
-            document.getElementById('thanks-msg').style.display = 'block';
-        }
-    </script>
-</body>
-</html>
+                document.getElementById('boy-count').innerText = data.boy
