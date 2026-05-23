@@ -125,4 +125,130 @@
         .map-link { display: inline-block; margin-top: 10px; color: #d63384; font-weight: bold; text-decoration: none; padding: 5px 10px; border: 2px solid #d63384; border-radius: 15px; transition: background 0.3s, color 0.3s; }
         .map-link:hover { background: #d63384; color: white; }
 
-        .btn { display: inline-block; padding: 14px 20px;
+        .btn { display: inline-block; padding: 14px 20px; margin: 6px; border-radius: 30px; text-decoration: none; font-weight: bold; color: white; border: none; cursor: pointer; transition: transform 0.2s; font-size: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.15); width: 45%; }
+        .btn:active { transform: scale(0.95); }
+        .btn-pink { background-color: #ff91a4; }
+        .btn-blue { background-color: #87cefa; }
+        
+        .btn-whatsapp { background-color: #25D366; display: block; margin: 20px auto; width: 80%; max-width: 280px; padding: 16px; font-size: 1.1rem; }
+
+        .poll { margin-top: 20px; padding: 20px; background: rgba(255, 255, 255, 0.5); border-radius: 20px; width: 100%; backdrop-filter: blur(3px); }
+        .poll-buttons { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        
+        .results { display: flex; justify-content: space-around; margin-top: 15px; font-size: 1.1rem; font-weight: bold; background: white; padding: 10px; border-radius: 15px; }
+        .count-girl { color: #d63384; }
+        .count-boy { color: #007bff; }
+        #thanks-msg { display: none; color: #2e7d32; font-weight: bold; margin-top: 15px; }
+    </style>
+</head>
+<body class="locked">
+
+    <div id="welcome-screen" class="welcome-screen">
+        <button class="seal-button" onclick="abrirInvitacion()"></button>
+        <div class="welcome-action">
+            <div class="volume-hint">Toca el sello para abrir 💌 <br> <small style="font-weight: normal;">Sube el volumen 🔊</small></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>¿Niño o Niña?</h1>
+        <h2>¡El gran secreto se revela!</h2>
+        
+        <div class="names">
+            Acompaña a Johanna y Harold <br>en esta dulce espera.
+        </div>
+
+        <audio id="bg-music" src="indi.mp3" controls loop class="audio-player"></audio>
+
+        <div class="media-gallery">
+            <img src="moyyo.jpg" alt="Johanna y Harold">
+            <video src="ecovideo.mp4" controls preload="metadata"></video>
+            <img src="bebeeco1.jpg" alt="Ecografía">
+        </div>
+
+        <div class="details">
+            <p><strong>📅 Fecha:</strong> Domingo, 24 de Mayo</p>
+            <p><strong>⏰ Hora:</strong> 4:30 PM</p>
+            <p><strong>📍 Lugar:</strong> Cra 22A # 1 oeste 28, Segundo piso, Cali</p>
+            <a href="https://maps.app.goo.gl/mKKC8JNMVnavACY86" class="map-link" target="_blank">🗺️ Ver ubicación en el mapa</a>
+            
+            <p class="dress-code">Código de vestimenta: <br> ¡Rosa o Azul según tu predicción! 🎀🧢</p>
+        </div>
+
+        <div class="poll">
+            <h3 style="margin-top: 0;">¿Tú qué crees que será?</h3>
+            <div class="poll-buttons">
+                <button id="btn-girl" class="btn btn-pink" onclick="vote('girl')">¡Es Niña! 🎀</button>
+                <button id="btn-boy" class="btn btn-blue" onclick="vote('boy')">¡Es Niño! 🧢</button>
+            </div>
+            <p id="thanks-msg">¡Voto registrado! ✨</p>
+            <div class="results">
+                <div>Team 🎀: <span id="girl-count" class="count-girl">0</span></div>
+                <div>Team 🧢: <span id="boy-count" class="count-boy">0</span></div>
+            </div>
+        </div>
+
+        <a href="https://wa.me/3135211286?text=¡Hola!%20Sí%20asistiré%20a%20la%20revelación%20de%20género.%20¡Allá%20nos%20vemos!%20🎉" class="btn btn-whatsapp" target="_blank">
+            Confirmar Asistencia ✅
+        </a>
+    </div>
+
+    <script>
+        function abrirInvitacion() {
+            var welcomeScreen = document.getElementById('welcome-screen');
+            var bgMusic = document.getElementById('bg-music');
+            welcomeScreen.style.opacity = '0';
+            setTimeout(function() {
+                welcomeScreen.style.display = 'none';
+                document.body.classList.remove('locked');
+            }, 800);
+            bgMusic.play().catch(function(error) {
+                console.log("El navegador requiere interacción manual para el audio");
+            });
+        }
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB7W3iDnQg8lE-Z4lB4UcdJb9vMAei7mg4",
+            authDomain: "revelbebe-22e2f.firebaseapp.com",
+            databaseURL: "https://revelbebe-22e2f-default-rtdb.firebaseio.com",
+            projectId: "revelbebe-22e2f",
+            storageBucket: "revelbebe-22e2f.firebasestorage.app",
+            messagingSenderId: "293982525619",
+            appId: "1:293982525619:web:3e06a6b9e087e451e078c6",
+            measurementId: "G-44B8QKTGS1"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        const votesRef = database.ref('votes');
+
+        votesRef.on('value', (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                document.getElementById('girl-count').innerText = data.girl || 0;
+                document.getElementById('boy-count').innerText = data.boy || 0;
+            }
+        });
+
+        if (localStorage.getItem('hasVoted')) { disableVoting(); }
+
+        function vote(team) {
+            if (localStorage.getItem('hasVoted')) return;
+            votesRef.child(team).transaction((currentValue) => {
+                return (currentValue || 0) + 1;
+            }, (error, committed) => {
+                if (committed) {
+                    localStorage.setItem('hasVoted', 'true');
+                    disableVoting();
+                }
+            });
+        }
+
+        function disableVoting() {
+            document.getElementById('btn-girl').disabled = true;
+            document.getElementById('btn-boy').disabled = true;
+            document.getElementById('thanks-msg').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
