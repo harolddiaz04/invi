@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Revelación de Género | Johanna y Harold</title>
     
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -15,6 +15,10 @@
             --dark: #4a3728; 
         }
         
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Helvetica Neue', Arial, sans-serif;
             margin: 0;
@@ -23,13 +27,13 @@
             background-image: url('fondo.jpg'); 
             background-size: cover;
             background-position: center top;
-            background-attachment: fixed;
-            background-repeat: no-repeat;
+            background-attachment: scroll; 
             color: var(--dark);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
+            overflow-x: hidden;
         }
         
         body.locked { overflow: hidden; }
@@ -52,17 +56,15 @@
             transition: opacity 0.8s ease;
         }
 
-        /* EL SELLO INVISIBLE Y REDONDO */
         .seal-button {
             position: absolute;
-            /* Ajusta este % si el sello no queda centrado en tu imagen */
             top: 54%; 
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 120px; /* Tamaño del área clickeable del sello */
-            height: 120px;
-            background: rgba(255, 255, 255, 0); /* Totalmente transparente */
-            border-radius: 50%; /* Redondo */
+            width: 130px; 
+            height: 130px;
+            background: rgba(255, 255, 255, 0); 
+            border-radius: 50%; 
             border: none;
             cursor: pointer;
             outline: none;
@@ -71,161 +73,56 @@
 
         .welcome-action {
             position: absolute;
-            bottom: 10vh;
+            bottom: 8vh;
             text-align: center;
             width: 100%;
         }
 
         .volume-hint {
-            background: rgba(255, 255, 255, 0.7);
-            padding: 8px 20px;
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 10px 25px;
+            border-radius: 25px;
             font-weight: bold;
             color: var(--dark);
             display: inline-block;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
             backdrop-filter: blur(5px);
-            font-size: 0.9em;
+            font-size: 1rem;
+            animation: pulse 2s infinite;
         }
 
-        /* CONTENIDO INTERIOR */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* CONTENEDOR PRINCIPAL */
         .container {
             background: transparent; 
-            padding: 20px;
+            padding: 15px;
             max-width: 500px;
-            width: 90%;
-            margin-top: 120px; 
-            margin-bottom: 120px; 
+            width: 92%;
+            margin-top: 25vh; 
+            margin-bottom: 25vh; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         
-        h1 { font-size: 2.8em; margin-bottom: 5px; color: var(--dark); text-shadow: 1px 1px 2px rgba(255,255,255,0.8); }
-        h2 { font-size: 1.3em; font-weight: normal; color: #7a6352; margin-bottom: 30px; }
-        .names { font-size: 1.6em; font-weight: bold; margin-bottom: 15px; }
+        h1 { font-size: 2.2rem; margin-bottom: 5px; color: var(--dark); text-shadow: 1px 1px 2px rgba(255,255,255,0.8); }
+        h2 { font-size: 1.1rem; font-weight: normal; color: #7a6352; margin-bottom: 25px; }
+        .names { font-size: 1.3rem; font-weight: bold; margin-bottom: 15px; }
         
-        .audio-player { margin-bottom: 25px; width: 100%; max-width: 250px; border-radius: 30px; opacity: 0.8; }
+        .audio-player { margin-bottom: 20px; width: 100%; max-width: 250px; border-radius: 30px; opacity: 0.85; height: 40px; }
 
-        .media-gallery { display: flex; flex-direction: column; gap: 15px; margin: 0 auto 30px; }
-        .media-gallery img, .media-gallery video { width: 100%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .media-gallery { display: flex; flex-direction: column; gap: 15px; margin: 0 auto 25px; width: 100%; }
+        .media-gallery img, .media-gallery video { width: 100%; border-radius: 20px; box-shadow: 0 6px 15px rgba(0,0,0,0.15); object-fit: cover; }
 
-        .details { margin: 30px 0; padding: 15px; background: rgba(255, 255, 255, 0.4); border-radius: 15px; font-size: 1.1em; line-height: 1.6; }
-        .dress-code { font-style: italic; font-weight: bold; margin-bottom: 30px; }
-
-        .btn { display: inline-block; padding: 15px 25px; margin: 8px; border-radius: 30px; text-decoration: none; font-weight: bold; color: white; border: none; cursor: pointer; transition: transform 0.2s; font-size: 1em; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .btn:hover { transform: scale(1.05); }
-        .btn-pink { background-color: #ff91a4; }
-        .btn-blue { background-color: #87cefa; }
-        .btn-whatsapp { background-color: #25D366; display: block; margin: 20px auto; max-width: 220px; }
-
-        .poll { margin-top: 30px; padding: 20px; background: rgba(255, 255, 255, 0.3); border-radius: 20px; }
-        .results { display: flex; justify-content: space-around; margin-top: 15px; font-size: 1.3em; font-weight: bold; }
-        .count-girl { color: #d63384; }
-        .count-boy { color: #007bff; }
-        #thanks-msg { display: none; color: #2e7d32; font-weight: bold; margin-top: 15px; }
-    </style>
-</head>
-<body class="locked">
-
-    <div id="welcome-screen" class="welcome-screen">
-        <button class="seal-button" onclick="abrirInvitacion()"></button>
+        .details { margin: 25px 0; padding: 15px; background: rgba(255, 255, 255, 0.6); border-radius: 15px; font-size: 1rem; line-height: 1.5; width: 100%; backdrop-filter: blur(3px); }
+        .dress-code { font-style: italic; font-weight: bold; margin-top: 15px; color: #d63384; }
         
-        <div class="welcome-action">
-            <div class="volume-hint">Toca el sello para abrir 💌 <br> <small>Sube el volumen 🔊</small></div>
-        </div>
-    </div>
+        .map-link { display: inline-block; margin-top: 10px; color: #d63384; font-weight: bold; text-decoration: none; padding: 5px 10px; border: 2px solid #d63384; border-radius: 15px; transition: background 0.3s, color 0.3s; }
+        .map-link:hover { background: #d63384; color: white; }
 
-    <div class="container">
-        <h1>¿Niño o Niña?</h1>
-        <h2>¡El gran secreto se revela!</h2>
-        
-        <div class="names">
-            Acompaña a Johanna y Harold <br>en esta dulce espera.
-        </div>
-
-        <audio id="bg-music" src="indi.mp3" controls loop class="audio-player"></audio>
-
-        <div class="media-gallery">
-            <img src="moyyo.jpg" alt="Johanna y Harold">
-            <video src="ecovideo.mp4" controls preload="metadata"></video>
-            <img src="bebeeco1.jpg" alt="Ecografía">
-        </div>
-
-        <div class="details">
-            <p><strong>📅 Fecha:</strong> Domingo, 24 de Mayo</p>
-            <p><strong>⏰ Hora:</strong> 7:00 PM</p>
-            <p><strong>📍 Lugar:</strong> Cali, Valle del Cauca</p>
-            <p class="dress-code">Código de vestimenta: <br> ¡Rosa o Azul según tu predicción! 🎀🧢</p>
-        </div>
-
-        <div class="poll">
-            <h3>¿Tú qué crees que será?</h3>
-            <button id="btn-girl" class="btn btn-pink" onclick="vote('girl')">¡Es Niña! 🎀</button>
-            <button id="btn-boy" class="btn btn-blue" onclick="vote('boy')">¡Es Niño! 🧢</button>
-            <p id="thanks-msg">¡Voto registrado! ✨</p>
-            <div class="results">
-                <div>Team 🎀: <span id="girl-count" class="count-girl">0</span></div>
-                <div>Team 🧢: <span id="boy-count" class="count-boy">0</span></div>
-            </div>
-        </div>
-
-        <a href="https://wa.me/3135211286" class="btn btn-whatsapp" target="_blank">
-            Confirmar Asistencia ✅
-        </a>
-    </div>
-
-    <script>
-        function abrirInvitacion() {
-            var welcomeScreen = document.getElementById('welcome-screen');
-            var bgMusic = document.getElementById('bg-music');
-            welcomeScreen.style.opacity = '0';
-            setTimeout(function() {
-                welcomeScreen.style.display = 'none';
-                document.body.classList.remove('locked');
-            }, 800);
-            bgMusic.play();
-        }
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyB7W3iDnQg8lE-Z4lB4UcdJb9vMAei7mg4",
-            authDomain: "revelbebe-22e2f.firebaseapp.com",
-            databaseURL: "https://revelbebe-22e2f-default-rtdb.firebaseio.com",
-            projectId: "revelbebe-22e2f",
-            storageBucket: "revelbebe-22e2f.firebasestorage.app",
-            messagingSenderId: "293982525619",
-            appId: "1:293982525619:web:3e06a6b9e087e451e078c6",
-            measurementId: "G-44B8QKTGS1"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-        const votesRef = database.ref('votes');
-
-        votesRef.on('value', (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-                document.getElementById('girl-count').innerText = data.girl || 0;
-                document.getElementById('boy-count').innerText = data.boy || 0;
-            }
-        });
-
-        if (localStorage.getItem('hasVoted')) { disableVoting(); }
-
-        function vote(team) {
-            if (localStorage.getItem('hasVoted')) return;
-            votesRef.child(team).transaction((currentValue) => {
-                return (currentValue || 0) + 1;
-            }, (error, committed) => {
-                if (committed) {
-                    localStorage.setItem('hasVoted', 'true');
-                    disableVoting();
-                }
-            });
-        }
-
-        function disableVoting() {
-            document.getElementById('btn-girl').disabled = true;
-            document.getElementById('btn-boy').disabled = true;
-            document.getElementById('thanks-msg').style.display = 'block';
-        }
-    </script>
-</body>
-</html>
+        .btn { display: inline-block; padding: 14px 20px;
